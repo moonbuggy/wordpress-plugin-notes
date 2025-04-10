@@ -4,12 +4,14 @@ Plugin Name: Plugin Notes
 Plugin URI: http://wordpress.org/plugins/plugin-notes/
 Description: Allows you to add notes to plugins. Simple and sweet.
 Author: Mohammad Jangda
-Version: 1.6
+Version: 1.7
 Author URI: http://digitalize.ca/
 Contributor: Chris Dillon
 Contributor URI: http://gapcraft.com/
 Contributor: Juliette Reinders Folmer
 Contributor URI: http://adviesenzo.nl/
+Contributor: moonbuggy
+Contributor URI: https://github.com/moonbuggy/wordpress-plugin-notes
 Text Domain: plugin-notes
 Domain Path: /languages
 
@@ -103,9 +105,12 @@ if( !class_exists('plugin_notes')) {
 			// Add string replacement and markdown syntax filters to the note
 			add_filter('plugin_notes_note', array($this, 'filter_kses'), 10, 1);
 			add_filter('plugin_notes_note', array($this, 'filter_variables_replace'), 10, 3);
-			if( apply_filters( 'plugin_notes_markdown', true ) ) {
-				add_filter('plugin_notes_note', array($this, 'filter_markdown'), 10, 1);
-			}
+
+			// the markdown filter doesn'tw ork and if we apply it it empies the stirng
+			// if( apply_filters( 'plugin_notes_markdown', true ) ) {
+			// 	add_filter('plugin_notes_note', array($this, 'filter_markdown'), 10, 1);
+			// }
+
 			add_filter('plugin_notes_note', array($this, 'filter_breaks'), 10, 1);
 
 			// Add js and css files
@@ -196,7 +201,9 @@ if( !class_exists('plugin_notes')) {
 		/**
 		 * Outputs pluging note for the specified plugin
 		 */
-		function _add_plugin_note ( $note = null, $plugin_data, $plugin_file, $echo = true ) {
+		function _add_plugin_note ( $note = null, $plugin_data = [], $plugin_file = NULL, $echo = true ) {
+			if(empty($plugin_data) || empty($plugin_file))
+				return;
 
 			$plugin_safe_name = $this->_get_plugin_safe_name($plugin_data['Name']);
 			$actions = array();
@@ -205,7 +212,8 @@ if( !class_exists('plugin_notes')) {
 				$note_class = 'wp-plugin_note_box';
 
 				$note_text = $note['note'];
-				$filtered_note_text = apply_filters( 'plugin_notes_note', $note_text, $plugin_data, $plugin_file );
+				$filtered_note_text =
+						apply_filters( 'plugin_notes_note', $note_text, $plugin_data, $plugin_file );
 
 				$note_author = get_userdata($note['user']);
 				$note_date = $note['date'];
@@ -256,7 +264,12 @@ if( !class_exists('plugin_notes')) {
 		/**
 		 * Outputs form to add/edit/delete a plugin note
 		 */
-		function _add_plugin_form ( $note = '', $note_color, $plugin_safe_name, $plugin_file, $hidden = true, $echo = true ) {
+		function _add_plugin_form ( $note = '', $note_color = NULL, $plugin_safe_name = NULL, $plugin_file = NULL, $hidden = TRUE, $echo = TRUE ) {
+			if(empty($plugin_safe_name) || empty($plugin_file))
+				return;
+
+			if(empty($note_color))
+				$note_color = $this->defaultcolor;
 			$plugin_form_style = ($hidden) ? 'style="display:none"' : '';
 
 			$new_note_class = '';
@@ -264,11 +277,12 @@ if( !class_exists('plugin_notes')) {
 				$note = ( isset( $this->notes['plugin-notes_template'] ) ? $this->notes['plugin-notes_template'] : '' );
 				$new_note_class = ' class="new_note"';
 			}
+			$plugin_safe_name_esc = esc_attr( $plugin_safe_name );
 
 			$output = '
-			<div id="wp-plugin_note_form_' . esc_attr( $plugin_safe_name ) . '" class="wp-plugin_note_form" ' . $plugin_form_style . '>
-				 <label for="wp-plugin_note_color_' . esc_attr( $plugin_safe_name ) . '">' . __( 'Note color:', 'plugin-notes') . '
-				 <select name="wp-plugin_note_color_' . esc_attr( $plugin_safe_name ) . '" id="wp-plugin_note_color_' . esc_attr( $plugin_safe_name ) . '">
+			<div id="wp-plugin_note_form_' . $plugin_safe_name_esc . '" class="wp-plugin_note_form" ' . $plugin_form_style . '>
+				 <label for="wp-plugin_note_color_' . $plugin_safe_name_esc . '">' . __( 'Note color:', 'plugin-notes') . '
+				 <select name="wp-plugin_note_color_' . $plugin_safe_name_esc . '" id="wp-plugin_note_color_' . esc_attr( $plugin_safe_name ) . '">
 			';
 
 			// Add color options

@@ -12,7 +12,10 @@ Allows you to add notes to plugins.
 
 == Description ==
 
-Allows you to add notes to plugins. Useful when you're using lots of plugins and/or make modifications to a plugin and want to make a note of them, and/or work on your WordPress install with a group of people. This plugin was inspired by a post by [Chris Coyier](http://digwp.com): (http://digwp.com/2009/10/ideas-for-plugins/)
+Allows you to add notes to plugins. Useful when you're using lots of plugins
+and/or make modifications to a plugin and want to make a note of them, and/or
+work on your WordPress install with a group of people. This plugin was inspired
+by a post by [Chris Coyier](http://digwp.com): (http://digwp.com/2009/10/ideas-for-plugins/)
 
 = Features =
 * Add/edit/delete notes for each plugin on the plugin page
@@ -172,7 +175,7 @@ The plugin is translation ready, though there is not much to translate. Use the 
 
 = 2010-10-15 / 1.1 =
 
-* Certain HTML tags are now allowed in notes: `<p> <a> <b> <strong> <i> <em> <u> <img>`. Thanks to [Dave Abrahams](http://www.boostpro.com) for suggesting this feature. 
+* Certain HTML tags are now allowed in notes: `<p> <a> <b> <strong> <i> <em> <u> <img>`. Thanks to [Dave Abrahams](http://www.boostpro.com) for suggesting this feature.
 * Some style tweaks
 * Fixed PHP Error Notices
 

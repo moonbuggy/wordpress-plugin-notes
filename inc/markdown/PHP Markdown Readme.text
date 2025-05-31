@@ -305,12 +305,12 @@ Version History
 *	A code block starting on the second line of a document wasn't seen
 	as a code block. This has been fixed.
 
-*	Added programatically-settable parser properties `predef_urls` and 
-	`predef_titles` for predefined URLs and titles for reference-style 
+*	Added programatically-settable parser properties `predefURLs` and 
+	`predefTitles` for predefined URLs and titles for reference-style 
 	links. To use this, your PHP code must call the parser this way:
 
 		$parser = new Markdwon_Parser;
-		$parser->predef_urls = array('linkref' => 'http://example.com');
+		$parser->predefURLs = array('linkref' => 'http://example.com');
 		$html = $parser->transform($text);
 
 	You can then use the URL as a normal link reference:
@@ -357,7 +357,7 @@ Version History
 
 1.0.1h (3 Aug 2007):
 
-*	Added two properties (`no_markup` and `no_entities`) to the parser 
+*	Added two properties (`noMarkup` and `noEntities`) to the parser 
 	allowing HTML tags and entities to be disabled.
 
 *	Fix for a problem introduced in 1.0.1g where posting comments in 
